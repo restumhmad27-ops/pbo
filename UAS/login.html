@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login System - Restu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffd700 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd700 100%);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd700 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .alert {
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .alert-success {
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+
+        .profile-page {
+            display: none;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd700 100%);
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #ff6b6b;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-info {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn-logout:hover {
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Halaman Login -->
+    <div class="container" id="loginPage">
+        <div class="logo">
+            <div class="logo-circle">🔐</div>
+            <h1>Selamat Datang</h1>
+            <p class="subtitle">Silakan login untuk melanjutkan</p>
+        </div>
+
+        <div class="alert alert-error" id="alertBox"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Masukkan username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Masukkan password" required>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+
+    <!-- Halaman Profile -->
+    <div class="container profile-page" id="profilePage">
+        <div class="profile-header">
+            <div class="profile-avatar">👤</div>
+            <h1 id="profileName">Restu</h1>
+            <p>Selamat datang kembali!</p>
+        </div>
+
+        <div class="profile-info">
+            <div class="info-row">
+                <span class="info-label">Username:</span>
+                <span class="info-value" id="displayUsername">restu</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status:</span>
+                <span class="info-value">✅ Aktif</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Login Terakhir:</span>
+                <span class="info-value" id="loginTime">-</span>
+            </div>
+        </div>
+
+        <button class="btn btn-logout" onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Class User (OOP)
+        class User {
+            constructor(username, password) {
+                this.username = username;
+                this.password = password;
+                this.loginTime = null;
+            }
+
+            validateLogin(inputUsername, inputPassword) {
+                return this.username === inputUsername && this.password === inputPassword;
+            }
+
+            setLoginTime() {
+                this.loginTime = new Date().toLocaleString('id-ID');
+            }
+
+            getLoginTime() {
+                return this.loginTime;
+            }
+        }
+
+        // Database User (LocalStorage)
+        class UserDatabase {
+            constructor() {
+                this.initDatabase();
+            }
+
+            initDatabase() {
+                const users = [
+                    { username: 'restu', password: '12345' }
+                ];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            getUser(username) {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userData = users.find(u => u.username === username);
+                if (userData) {
+                    return new User(userData.username, userData.password);
+                }
+                return null;
+            }
+        }
+
+        // Inisialisasi Database
+        const db = new UserDatabase();
+
+        // Event Listener untuk Form Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const alertBox = document.getElementById('alertBox');
+
+            // Ambil user dari database
+            const user = db.getUser(username);
+
+            // Validasi login
+            if (user && user.validateLogin(username, password)) {
+                // Login berhasil
+                user.setLoginTime();
+                
+                // Tampilkan alert sukses
+                alertBox.className = 'alert alert-success';
+                alertBox.textContent = '✅ Login berhasil! Mengarahkan ke halaman profile...';
+                alertBox.style.display = 'block';
+
+                // Redirect ke halaman profile setelah 1 detik
+                setTimeout(() => {
+                    showProfile(user);
+                }, 1000);
+            } else {
+                // Login gagal
+                alertBox.className = 'alert alert-error';
+                alertBox.textContent = '❌ Username atau password salah!';
+                alertBox.style.display = 'block';
+
+                // Shake animation
+                alertBox.style.animation = 'none';
+                setTimeout(() => {
+                    alertBox.style.animation = 'shake 0.5s ease';
+                }, 10);
+            }
+        });
+
+        // Fungsi untuk menampilkan halaman profile
+        function showProfile(user) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('profilePage').style.display = 'block';
+            document.getElementById('displayUsername').textContent = user.username;
+            document.getElementById('loginTime').textContent = user.getLoginTime();
+        }
+
+        // Fungsi logout
+        function logout() {
+            document.getElementById('profilePage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginForm').reset();
+            document.getElementById('alertBox').style.display = 'none';
+        }
+    </script>
+</body>
+  </html>
